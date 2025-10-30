@@ -11,7 +11,7 @@
 	
 	<a href="insert">데이터 추가</a><p/>
 	<a href="selectAll">데이터 전체 조회</a><p/>
-	<a href="selecById?id=1">데이터 조회 - by Id</a><p/>
+	<a href="selectById?id=1">데이터 조회 - by Id</a><p/>
 	
 	<hr>
 	

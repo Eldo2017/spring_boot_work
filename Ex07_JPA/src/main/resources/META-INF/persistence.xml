@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             version="3.0"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+     <persistence-unit name="JpaEx01" transaction-type="RESOURCE_LOCAL">
+     	<!-- <class>exam1.Member1</class> -->
+     	<class>exam2.Member2</class>
+     	<exclude-unlisted-classes>true</exclude-unlisted-classes>
+     	<properties>
+     		<!-- 아래 5번까지는 필수 사항 -->
+			<property name="jakarta.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver" />
+			<property name="jakarta.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521/free" />
+			<property name="jakarta.persistence.jdbc.user" value="springboot_Playmaker" />
+			<property name="jakarta.persistence.jdbc.password" value="1234" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.OracleDialect" />
+			<!-- 6번부터는 옵션(선택)임 -->
+			<property name="hibernate.hbm2ddl.auto" value="create" />
+			<property name="show_sql" value="true" />
+			<property name="hibernate.temp.use_jdbc_metadata_defaults" value="false" />
+		</properties>
+     </persistence-unit>
+</persistence>

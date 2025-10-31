@@ -1,8 +1,5 @@
 package com.study.springboot.domain;
 
-import java.time.LocalDate;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -20,17 +17,17 @@ import lombok.NoArgsConstructor;
 public class Member {
 	@Id
 	@SequenceGenerator(
-		name = "s02",
+		name = "s01",
 		sequenceName="JpaMember2_SEQ",
 		allocationSize=1
 	)
-	@GeneratedValue(generator="s02")
+	@GeneratedValue(generator="s01")
 	private Long id;
-	private String username;
+	private String name;
 	private String email;
 	
-	public Member(String username, String email) {
-		this.username = username;
+	public Member(String email, String name) {
+		this.name = name;
 		this.email = email;
-	}
+	}	
 }

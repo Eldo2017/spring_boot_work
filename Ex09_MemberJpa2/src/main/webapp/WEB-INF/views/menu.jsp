@@ -19,5 +19,6 @@
 	<a href="selectByEmail?email=Glare6237@naver.com">데이터 조회 - by Email</a><p/>
 	<a href="selectByNameLike?name=영">리스트 조회 - Name Like</a><p/>
 	<a href="selectByNameLikeNameDesc?name=철">데이터 조회 - Name Like Name Desc</a><p/>
+	<a href="selectByNameOrder?name=신">데이터 조회 - Name Order</a><p/>
 </body>
 </html>

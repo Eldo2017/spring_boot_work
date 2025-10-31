@@ -1,13 +1,17 @@
 package com.study.springboot.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.study.springboot.domain.Member;
 import com.study.springboot.repository.MemberRepository;
+
+import com.study.springboot.domain.Member;
 
 @Service
 public class MemberService {
@@ -16,37 +20,51 @@ public class MemberService {
 	
 	public void insert() {
 		Member user;
-		user = new Member("Demons3620@naver.com","±èµÎÇÑ");
+		user = new Member("test1@tjoeun.com", "±è¹Î¼ö");
 		mRepository.save(user);
-		user = new Member("Vail9915@naver.com","°­¾Æ±¸");
+		user = new Member("test2@tjoeun.com", "ÀÌ¼­¿¬");
 		mRepository.save(user);
-		user = new Member("Destream1623@naver.com","À±°¥Ä¡");
+		user = new Member("test3@tjoeun.com", "¹ÚÁöÈÆ");
 		mRepository.save(user);
-		user = new Member("Juuga4713@naver.com","ÀÌÁ¤Àç");
+		user = new Member("test4@tjoeun.com", "ÃÖÀ¯Áø");
 		mRepository.save(user);
-		user = new Member("Glare6237@naver.com","±è¹«¿Á");
+		user = new Member("test5@tjoeun.com", "Á¤Çö¿ì");
 		mRepository.save(user);
-		user = new Member("Gazer8255@naver.com","¹®¿µÃ¶");
+		user = new Member("test6@tjoeun.com", "ÇÑÁö¹Î");
 		mRepository.save(user);
-		user = new Member("Glare2_7154@naver.com","±è¿µÅÂ");
+		user = new Member("test7@tjoeun.com", "¿À¼¼ÈÆ");
 		mRepository.save(user);
-		user = new Member("Regad2259@naver.com","½Å¿µ±Õ");
+		user = new Member("test8@tjoeun.com", "À±¾Æ¸§");
 		mRepository.save(user);
-		user = new Member("RegadOmega16@naver.com","È«¸¸±æ");
-		mRepository.save(user);
-		user = new Member("Dread3645@naver.com","°í°æÁÖ");
-		mRepository.save(user);
-		user = new Member("Dorado6659@naver.com","±è°üÃ¶");
-		mRepository.save(user);
-		user = new Member("Eldo8845@naver.com","±è»ï¼ö");
+		user = new Member("test9@tjoeun.com", "Àå¹ÎÀç");
 		mRepository.save(user);
 	}
 
 	public List<Member> selectAll() {
 		return mRepository.findAll();
 	}
-	
+
 	public Optional<Member> selectById(Long id) {
 		return mRepository.findById(id);
+	}
+
+	public List<Member> selectByName(String name) {
+		return mRepository.findByName(name);
+	}
+	
+	public Member selectByEmail(String email) {
+		return mRepository.findByEmail(email);
+	}
+
+	public List<Member> selectByNameLike(String name) {
+		return mRepository.findByNameLike(name);
+	}
+
+	public List<Member> selectByNameLikeNameDesc(String name) {
+		return mRepository.findByNameLikeOrderByNameDesc(name);
+	}
+
+	public List<Member> selectByNameLikeOrder(String name, Sort sort) {
+		return mRepository.findByNameLike(name,sort);
 	}
 }

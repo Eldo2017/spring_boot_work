@@ -1,9 +1,11 @@
 package com.study.springboot.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,90 +25,65 @@ public class MemberController {
 	public String root() {
 		return "menu";
 	}
-	
-	@GetMapping("/insert")
-	public String insert() {
-		mService.insert();
-		return "insert";
-	}
-	
-	@GetMapping("/selectAll")
-	public String selectAll(Model model) {
-		List<Member> list = mService.selectAll();
-		model.addAttribute("mList", list);
-		model.addAttribute("title", "All");
-		return "select_list";
-	}
-	
-	@GetMapping("/selectById")
-	public String selectById(@RequestParam("id") Long id, Model model) {
-		System.out.println(id);
-		Optional<Member> member = mService.selectById(id);
-		if(member.isPresent()) {
-			model.addAttribute("member", member.get());
-		} else {
-			model.addAttribute("member", null);
-		}
-		model.addAttribute("title", "ID");
-		return "select_one";
-	}
-	
-	@GetMapping("/selectByName")
-	public String selectByName(@RequestParam("name") String name, Model model) {
-		List<Member> list = mService.selectByName(name);
-		model.addAttribute("mList", list);
-		model.addAttribute("title", "Name");
-		return "select_list";
-	}
-
-	@GetMapping("/selectByEmail")
-	public String selectByEmail(@RequestParam("email") String email, Model model) {
-		Member member = mService.selectByEmail(email);
-		model.addAttribute("member", member);
-		model.addAttribute("title", "Email");
-		return "select_one";
-	}
-	
 	@GetMapping("/selectByNameLike")
-	public String selectByNameLike(@RequestParam("name") String name, Model model) {
-		name= "%" + name + "%";
-		List<Member> list = mService.selectByNameLike(name);
-		model.addAttribute("mList", list);
-		model.addAttribute("title", "NameLike");
-		return "select_list";
-	}
-	
-	@GetMapping("/selectByNameLikeNameDesc")
-	public String selectByNameLikeNameDesc(@RequestParam("name") String name, Model model) {
-		name= "%" + name + "%";
-		List<Member> list = mService.selectByNameLikeNameDesc(name);
-		model.addAttribute("mList", list);
-		model.addAttribute("title", "NameLikeNameDesc");
-		return "select_list";
-	}
-	
-	@GetMapping("selectByNameOrder")
-	public String selectByNameOrder(@RequestParam("name") String name, Model model) {
-		name= "%" + name + "%";
+	public String selectByNameLike(@RequestParam("name") String search,
+									@RequestParam("page") int page,
+									Model model) 
+	{
+		System.out.println(search);
+		System.out.println(page);
+		String name = search + "%";
 		/*
-		 * Sort / Sort.order
-		   - spring Framework의 일부, 데이터 정렬을 지정하는데 사용한다
-		   - sort 클래스는 하나 이상의 Sort.Order 객체를 가진다
-		     ex) 하나라면
-		         Sort sort = Sort.by(Sort.Order("컬럼명"));
-		         
-		         하나 이상이면
-		         Sort sort = Sort.by(
-		         			 Sort.Order("컬럼명"),
-		         			 Sort.Order("컬럼명"),
-		         			 			...
-		         			 )
+		 * Pageable 인터페이스
+		   : Spring 내에선 Pagination을 지원하는 Pageable 인터페이스를 제공한다
+		   - getPageNumber() : 현재 페이지 번호 반환(0부터)
+		   - getPageSize : 한 페이지 당 최대 항목 수 반환
+		   - getOffset() : 현재 페이지 시작 위치 반환
+		   - getSort() : 정렬 정보 반환
+		   - next() : 다음 페이지 정보 반환
+		   - previous() : 이전 페이지 정보 반환
+		   
+		 * PageRequest 클래스
+		   : Spring Data JPA에서 제공하는 Pageable 구현체 중 하나로, 페이지 정보를 생성한다
+		   - page : 조회할 페이지 번호(0부터)
+		   - size : 한 페이지당 최대 항목 수
+		   - sort : 정렬 정보(생략 가능)
+		   - direction : 정렬 방향(ASC, DESC)
+		   - properties : 정렬 대상 속성명
+		   
+		   > 생성자
+		   PageRequest(int page, int size)
+		   PageRequest(int page, int size, Sort sort)
+		   PageRequest(int page, int size, Sort.Direction direction, String... properties)
 		 */
-		Sort sort = Sort.by(Sort.Order.desc("name"),
-							Sort.Order.desc("email"));
-		List<Member> list = mService.selectByNameLikeOrder(name,sort);
-		model.addAttribute("mList", list);
-		model.addAttribute("title", "NameOrder");
-		return "select_list";
+		
+		int nPage = page - 1;
+		Sort sort = Sort.by(Sort.Order.desc("name"));
+		
+		
+		/*
+		Pageable pageable = PageRequest.ofSize(10)
+										.withPage(nPage)
+										.withSort(sort);
+		*/
+		
+		Pageable pageable = PageRequest.of(nPage, 10, sort);
+		Page<Member> res = mService.selectByNameLike(name, pageable);
+		
+		List<Member> content = res.getContent(); // 실제 객체가 담긴 List<Member>를 반환시켜준다
+		long totalElements = res.getTotalElements(); // 총 레코드 수
+		int totalPages = res.getTotalPages(); // 총 페이지 수
+		int size = res.getSize(); // 1페이지 당 들어갈 레코드 수
+		int pPage = res.getNumber() + 1; // 현재 페이지(0번부터 => 그래서 +1을 해야 1번부터 시작한다)
+		int ePage = res.getNumberOfElements(); // 현재 페이지 내 레코드 수
+		
+		model.addAttribute("members", content);
+		model.addAttribute("totalElements", totalElements);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("size", size);
+		model.addAttribute("pPage", pPage);
+		model.addAttribute("ePage", ePage);
+		
+		return "selectPage";
 	}
 }

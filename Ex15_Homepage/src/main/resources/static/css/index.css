@@ -1,0 +1,23 @@
+@charset "UTF-8";
+a {
+	text-decoration:none;
+	color:black;
+}
+.nav-area {
+	width: 100%;
+	background-color:blueviolet;
+	color:white;
+	text-align:center;
+	height:40px;
+}
+.nav-area td {
+	width: 25%;
+}
+.nav-area td:hover {
+	color: deeppink;
+	cursor:pointer;
+}
+.imgwrap {
+	text-align:center;
+	width:50px;
+}

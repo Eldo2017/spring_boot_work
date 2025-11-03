@@ -8,7 +8,20 @@
 		text-decoration:none;
 		color:black;
 	}
-	
+	.nav-area {
+		width: 100%;
+		background-color:blueviolet;
+		color:white;
+		text-align:center;
+		height:40px;
+	}
+	.nav-area td {
+		width: 25%;
+	}
+	.nav-area td:hover {
+		background-color: darkgreen;
+		cursor:pointer;
+	}
 </style>
 </head>
 <body>
@@ -21,7 +34,7 @@
 					<tr>
 						<td>ID</td>
 						<td><input name="id" required></td>
-						<td rowspan="2"><input type="submit" value="로그인"></td>				
+						<td rowspan="2"><input type="submit" value="로그인" style="height:50px"></td>				
 					</tr>
 					<tr>
 						<td>Password</td>
@@ -38,7 +51,7 @@
 		</div>
 	</div>
 	<br>
-	<!-- 로그인 이후 -->
+	<!-- 로그인 이후 
 	<div align="right">
 		<table>
 			<tr>
@@ -55,8 +68,8 @@
 				</td>
 			</tr>
 		</table>
-	</div>
-	<table align="center">
+	</div> -->
+	<table class="nav-area" align="center">
 		<tr>
 			<td>HOME</td>
 			<td>공지사항</td>

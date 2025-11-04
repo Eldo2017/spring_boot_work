@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="/css/index.css" rel="stylesheet">
+<link href="/css/detailForm.css" rel="stylesheet">
+<script src="/webjars/jquery/3.7.1/jquery.js"></script>
+<style>
+	td {
+		height: 30px;
+	}
+</style>
+</head>
+<body>
+	<div th:replace="~{ fragments/header.html :: fragment-menu }"></div>
+	<h2 align="center">글 쓰 기</h2>
+	<div align="center">
+		<form action="update" method="post">
+			<table align="center">
+				<tr>
+					<td>작성자</td>
+					<td><input name="writer" th:value="${board.writer}" readonly></td>
+				</tr>
+				<tr>
+					<td>제목</td>
+					<td><input name="title" th:value="${board.title}"></td>
+				</tr>
+				<tr>
+					<td>내용</td>
+					<td><textarea name="content" rows="10" cols="50" th:text="${board.content}"></textarea></td>
+				</tr>
+				<tr>
+					<td>작성날짜</td>
+					<td><input name="CreatedDate" th:value="*{#temporals.format(board.CreatedDate,'yyyy-MM-dd')}"></td>
+				</tr>
+				<tr>
+					<td>조회수</td>
+					<td><input name="count" th:value="${board.count}"></td>
+				</tr>
+				<span th:id="${loginUser != null && loginUser.id == board.writer}">
+					<tr>
+					<td colspan="2" align="center">
+						<input type="submit" value="게시글 수정" style="width:150px;">&emsp;
+						<input th:if="${reply.size <= 0}" type="button" value="삭제하기" style="width:80px;" id="delete">
+					</td>
+				</tr>
+				</span>
+			</table>
+		</form>
+		
+		<h3 align="center">댓 글 목 록</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>댓글 쓰기</th>
+					<span th:if="${loginUser != null}">
+						<td><textarea cols="35" rows="3" id="replyContent"></textarea></td>
+						<td><input type="button" value="등록" id="insertReply"></td>
+					</span>
+					<td th:if="${loginUser == null}" colspan="2">로그인 후 댓글을 작성하실 수 있습니다</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						총 댓글 개수 : <span th:text="${reply.size()}"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>작성자</td>
+					<td>내용</td>
+					<td>작성일</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="r : ${reply}">
+					<td th:text="${r.writer}"></td>
+					<td th:text="${r.content}"></td>
+					<td th:text="*{#temporals.format(r.CreatedDate,'yyyy-MM-dd')}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<script>
+		$(() => {
+			$("#insertReply").on('click',function() {
+				$.ajax({
+					url: "rinsert",
+					data: {
+						refBno: "[[${board.bno}]]",
+						writer: "[[${loginUser.id}]]",
+						content: $("#replyContent").val()
+					},
+					success: function(res) {
+						console.log(res)
+					},
+					error: function() {
+						console.log("댓글 작성 ajax 통신 실패")
+					}
+				})
+			})
+		})
+	</script>
+</body>
+</html>

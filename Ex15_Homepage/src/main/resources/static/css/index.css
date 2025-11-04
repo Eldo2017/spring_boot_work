@@ -1,21 +1,32 @@
 @charset "UTF-8";
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 a {
-	text-decoration:none;
-	color:black;
+	text-decoration: none;
+	color: black;
 }
 .nav-area {
 	width: 100%;
-	background-color:blueviolet;
-	color:white;
-	text-align:center;
-	height:40px;
+	background-color: blueviolet;
+	color: white;
+	text-align: center;
+	height: 50px;
+	
+	border-collapse: collapse;
+    border-spacing: 0;
+
+    margin: 0;
+    padding: 0;
 }
 .nav-area td {
 	width: 25%;
 }
 .nav-area td:hover {
-	color: deeppink;
-	cursor:pointer;
+	background-color:deeppink;
+	cursor: pointer;
 }
 .imgwrap {
 	text-align: center;

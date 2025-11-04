@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="/css/index.css" rel="stylesheet">
+<link href="/css/boardList.css" rel="stylesheet">
+</head>
+<body>
+	<div th:replace="~{ fragments/header.html :: fragment-menu }"></div>
+	<br>
+	<h2 align="center">게 시 판</h2>
+	<br>
+	<div align="center">
+		<div th:text="|총 게시글의 수 : ${boardPage.totalElements}|"></div>
+		<div th:text="|현재 페이지 : ${boardPage.number + 1}|"></div>
+		<div th:text="|총 페이지의 수 : ${boardPage.totalPages}|"></div>
+		<table id="blist">
+			<thead>
+				<tr>
+					<th>번호</th>
+					<th width="100">제목</th>
+					<th width="70">작성자</th>
+					<th width="50">조회수</th>
+					<th width="70">작성일</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- th:each 구문에서 boardPage객체를 순회하게 되면
+				Thymeleaf가 내부적으로 boardPage.getContent()를 호출해 content에
+				포함된 게시글 리스트를 반환시킨다 -->
+				<tr th:each="board, state: ${boardPage}">
+					<td th:text="${boardPage.totalElements - boardPage.number * boardPage.size - state.index}"></td>
+					<td ><a th:href="@{detailForm(bno=${board.bno})}" th:text="${board.title}"></a></td>
+					<td th:text="${board.writer}"></td>
+					<td th:text="${board.count}"></td>
+					<td th:text="*{#temporals.format(board.CreatedDate,'yyyy-MM-dd')}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<div th:if="${loginUser != null}">
+			<a href="insertForm">글쓰기</a>
+		</div>
+	</div>
+</body>
+</html>

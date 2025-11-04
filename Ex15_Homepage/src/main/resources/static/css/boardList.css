@@ -1,0 +1,10 @@
+@charset "UTF-8";
+#blist {
+	border: 1px solid;
+	border-collapse: collapse;
+}
+
+#blist th, #blist td {
+	border: 1px solid;
+	height: 30px;
+}

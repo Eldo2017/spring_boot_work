@@ -30,7 +30,8 @@
 	GET /menu/type/jp		: 일식만 조회
 	GET /menu/taste/mild		: 순한맛만 조회
 	GET /menu/taste/hot		: 매운맛만 조회
-	GET /menu/10				: 10번메뉴 하나만 조회(한건 조회)
+	
+	GET /menu/7				: 7번메뉴 하나만 조회(한건 조회)
 	
 	POST /menu				: 메뉴 한건 등록
 	
@@ -94,6 +95,15 @@
 		<div id="menuTypeTaste-result"></div>
 		<hr>
 		
+		<!-- 4. GET /menu/{id} -->
+		<div>
+			<h3>메뉴 번호로 조회</h3>
+			<input type="number" id="menuIdInput" placeholder="메뉴번호를 입력하시오">
+			<button class="btn" id="menuIdBtn">조 회</button>
+		</div><br>
+		<div id="menuId-result"></div>
+		<hr>
+		
 		<script>
 			$("#typeSelect").on('click', e => {
 				console.log(e.target.value);
@@ -118,6 +128,27 @@
 					url : `/menu/type/${type}/taste/${taste}`,
 					success (result) {
 						menuTable("#menuTypeTaste-result", result);
+					},
+					error : console.log
+				})
+			})
+		</script>
+		
+		<script>
+			$("#menuIdBtn").on('click',() => {
+				const id = $("#menuIdInput").val();
+				if(!id){
+					alert('메뉴번호를 입력하시오');
+					return;
+				}
+				
+				$.ajax({
+					url: `/menu/${id}`,
+					method: 'GET',
+					success(result) {
+						console.log(result);
+						 // 결과가 객체(단일 항목)이므로 배열로 감싸서 재사용
+						menuTable("#menuId-result",[result]);
 					},
 					error : console.log
 				})

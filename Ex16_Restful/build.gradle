@@ -33,7 +33,7 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
 	annotationProcessor 'org.projectlombok:lombok'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	// providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	
@@ -41,6 +41,8 @@ dependencies {
 	implementation 'org.springframework.security:spring-security-crypto:6.5.6'
 	// Jquery 사용 설정
 	implementation 'org.webjars:jquery:3.7.1'
+	// Restful API의 POST 사용 시
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
 }
 
 tasks.named('test') {

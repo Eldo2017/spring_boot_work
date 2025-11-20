@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="/css/index.css" rel="stylesheet">
+<link href="/css/boardList.css" rel="stylesheet">
+</head>
+<body>
+	<div th:replace="~{ fragments/header.html :: fragment-menu }"></div>
+	<br>
+	<h2 align="center">게 시 판</h2>
+	<br>
+	<div align="center">
+		<div th:text="|총 게시글 수 : ${boardPage.totalElements}|"></div>
+		<div th:text="|현재 페이지 : ${boardPage.number+1}|"></div>
+		<div th:text="|총 페이지 수 : ${boardPage.totalPages}|"></div>
+		<table id="bList">
+			<thead>
+				<tr>
+					<th width="50">번호</th>
+					<th width="150">제목</th>
+					<th width="70">작성자</th>
+					<th width="50">조회수</th>
+					<th width="100">작성일</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- 
+				th:each 구문에서 boardPage객체를 순회하게 되면
+				Thymeleaf가 내부적으로 boardPage.getContent()를 호출하여 content에
+				포함된 게시글 리스트를 반환함 
+				-->
+				<tr th:each="board, state: ${boardPage}">
+					<td th:text="${boardPage.totalElements-boardPage.number*boardPage.size-state.index}"></td>
+					<td><a th:href="@{detailForm(bno=${board.bno})}" th:text="${board.title}"></a></td>
+					<td th:text="${board.writer}"></td>
+					<td th:text="${board.count}"></td>
+					<td th:text="*{#temporals.format(board.CreatedDate, 'yyyy-MM-dd')}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<!-- 페이징 처리 -->
+		<div align="center">
+			<a th:if="${nowPage > 0}" th:href="@{list(nowPage=${nowPage-1})}">Prev...</a>
+			<!-- 
+				#numbers라는 숫자 포맷 메소드 지원
+				#numbers.sequence()메소드 : python의 range(start, end, step)와 같다
+			 -->
+			<span th:each="pageNumber : ${#numbers.sequence(nowPage, endPage-1)} ">
+				<strong th:if="${pageNumber == nowPage}" 
+						th:text="|[${pageNumber+1}]|"></strong>
+				<a th:unless="${pageNumber == nowPage}" 
+					th:href="@{list(nowPage=${pageNumber})}" 
+					th:text="|[${pageNumber+1}]|"></a>
+			</span>
+			<a th:if="${nowPage < boardPage.totalPages-1}" th:href="@{list(nowPage=${nowPage+1})}">...Next</a>
+		</div>
+		
+		<div th:if="${loginUser != null}">
+			<a href="insertForm">글쓰기</a>
+		</div>
+	</div>
+</body>
+</html>

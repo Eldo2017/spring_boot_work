@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:fragment="fragment-menu">
+		<h1 align="center">SpringBoot HomePage</h1>
+		<div th:if="${loginUser == null}" align="right">
+			<form action="login" method="post">
+				<table>
+					<tr>
+						<td>아이디</td>
+						<td><input name="id" required></td>
+						<td rowspan="2"><input type="submit" value="로그인" style="height:50px;"></td>
+					</tr>
+					<tr>
+						<td>비밀번호</td>
+						<td><input type="password" name="password" required></td>
+					</tr>
+					<tr>
+						<td colspan="3" align="center">
+							<a href="enrollForm">회원가입</a>&emsp;
+							<a href="">아이디/비밀번호찾기</a>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<div th:if="${loginUser != null}" align="right">
+			<table>
+				<tr>
+					<td colspan="2">
+						<!--/*  thymeleaf의 주석 
+						<h3 th:text="${loginUser.name}">님 환영합니다</h3> ->  이름만 나옴
+						* 문자열 합치기 
+						<h3 th:text="${loginUser.name} + '님 환영합니다'"></h3> 
+						<h3 th:text="|${loginUser.name}님 환영합니다|"></h3>
+						*/-->
+						<h3>[[${loginUser.name}]]님 환영합니다</h3>  <!--/* [[문자로 인식]] */-->
+						<!--/* 
+						 	data 변수에 = <b>Hello</b> 들어있다면
+						 	[[${data}]]  -> <b>Hello</b>  -> <b>도 문자로 인식
+						 	[(${data})]  -> Hello  -> 굵은 글씨로 출력
+						*/-->
+					</td>
+				</tr>
+				<tr>
+					<td><a href="">마이페이지 / </a></td>
+					<td><a href="logout">로그아웃</a></td>
+				</tr>
+			</table>
+		</div>
+
+		<br>
+		<table align="center" class="nav-area">
+			<tr>
+				<td onclick="location.href='index'">홈화면</td>
+				<td onclick="location.href='menuForm'">메뉴</td>
+				<td onclick="location.href='list'">게시판</td>
+				<td>Info</td>
+			</tr>
+		</table>
+	</div>
+	
+</body>
+</html>

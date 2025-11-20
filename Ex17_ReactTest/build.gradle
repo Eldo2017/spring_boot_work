@@ -1,0 +1,50 @@
+plugins {
+	id 'java'
+	id 'war'
+	id 'org.springframework.boot' version '3.5.7'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.study'
+version = '0.0.1-SNAPSHOT'
+description = 'ready for real building of homepage'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+	annotationProcessor 'org.projectlombok:lombok'
+	// providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	
+	// 비밀번호 암호화
+	implementation 'org.springframework.security:spring-security-crypto:6.5.6'
+	// Jquery 사용 설정
+	implementation 'org.webjars:jquery:3.7.1'
+	// Restful API의 POST 사용 시
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
